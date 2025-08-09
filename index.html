@@ -1,17 +1,10 @@
-<!-- save as login.html and open in browser -->
 <!doctype html>
 <html lang="bn">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>n8n-like Login UI — Fundamentals Demo</title>
+  <title>My Portfolio — Sign Page</title>
 
-  <!-- CSS Fundamentals:
-       - CSS variables (custom properties)
-       - Flexbox for centering
-       - Responsive design (media query)
-       - BEM-like class naming for clarity
-  -->
   <style>
     :root{
       --bg:#0f1724;
@@ -25,12 +18,10 @@
       --glass-2: rgba(255,255,255,0.02);
     }
 
-    /* Page layout */
     *{box-sizing:border-box; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
     html,body{height:100%; margin:0; background: radial-gradient(1200px 600px at 10% 10%, rgba(110,231,183,0.06), transparent), linear-gradient(180deg,#071028 0%, var(--bg) 100%); color:#e6eef6;}
     .page{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:32px;}
 
-    /* Card */
     .auth{
       width:100%;
       max-width:var(--maxw);
@@ -43,7 +34,6 @@
       overflow:hidden;
     }
 
-    /* Left: hero / branding */
     .auth__brand{
       padding:36px;
       background: linear-gradient(180deg, rgba(255,255,255,0.012), transparent);
@@ -66,7 +56,6 @@
     .logo__title{font-weight:700; font-size:20px; letter-spacing:0.2px;}
     .brand__desc{color:var(--muted); line-height:1.5; font-size:14px; max-width:320px;}
 
-    /* Right: login form */
     .auth__form{
       padding:36px;
       display:flex;
@@ -79,7 +68,6 @@
     h2{margin:0; font-size:22px;}
     p.lead{margin:0; color:var(--muted); font-size:13px;}
 
-    /* Form elements - fundamentals: semantic form, labels, inputs */
     form.form{display:flex; flex-direction:column; gap:12px; margin-top:8px;}
     .field{display:flex; flex-direction:column; gap:8px;}
     label{font-size:13px; color:var(--muted);}
@@ -112,7 +100,6 @@
 
     .note {font-size:13px; color:var(--muted); margin-top:6px;}
 
-    /* small screens */
     @media (max-width:880px){
       .auth{grid-template-columns:1fr; padding:0; gap:0; border-radius:12px;}
       .auth__brand{display:none;}
@@ -123,31 +110,28 @@
 <body>
   <div class="page">
     <div class="auth" role="main" aria-labelledby="signin-title">
-      <!-- Branding column (left) -->
       <div class="auth__brand" aria-hidden="true">
-        <div class="logo" title="n8n-like sample">
-          <div class="logo__icon">n8</div>
+        <div class="logo" title="My Portfolio">
+          <div class="logo__icon">MP</div>
           <div>
-            <div class="logo__title">n8n — Demo</div>
-            <div style="font-size:12px;color:var(--muted)">Workflow · Automation · Open</div>
+            <div class="logo__title">My Portfolio</div>
+            <div style="font-size:12px;color:var(--muted)">Welcome to my personal site</div>
           </div>
         </div>
 
         <div class="brand__desc">
-          Smart, minimal login interface inspired by automation UIs. This demo focuses on clear HTML structure, modern CSS, and small vanilla JS for form handling.
+          Please sign in to access exclusive portfolio content and project details.
         </div>
 
         <div style="margin-top:auto; font-size:12px; color:var(--muted)">Tip: Resize the window to see responsive behavior.</div>
       </div>
 
-      <!-- Form column (right) -->
       <div class="auth__form">
         <div>
-          <h2 id="signin-title">Sign in to n8n-like</h2>
+          <h2 id="signin-title">Sign Page</h2>
           <p class="lead">Use your email and password to continue — or use a social sign-in for quick access.</p>
         </div>
 
-        <!-- Semantic form element (fundamental) -->
         <form id="loginForm" class="form" autocomplete="on" novalidate>
           <div class="field">
             <label for="email">Email</label>
@@ -187,15 +171,7 @@
     </div>
   </div>
 
-  <!-- JavaScript Fundamentals:
-       - DOM selection (querySelector / getElementById)
-       - Event handling (addEventListener)
-       - Form validation / preventDefault
-       - localStorage usage
-       - Minimal UX feedback
-  -->
   <script>
-    // Fundamental: DOM selection
     const form = document.getElementById('loginForm');
     const email = document.getElementById('email');
     const password = document.getElementById('password');
@@ -203,31 +179,26 @@
     const msg = document.getElementById('msg');
     const togglePwd = document.getElementById('togglePwd');
 
-    // Load remembered email (fundamental: web storage)
     const savedEmail = localStorage.getItem('demo_email');
     if (savedEmail) {
       email.value = savedEmail;
       remember.checked = true;
     }
 
-    // Toggle password visibility (basic DOM manipulation)
     togglePwd.addEventListener('click', () => {
       const t = password.type === 'password' ? 'text' : 'password';
       password.type = t;
       togglePwd.textContent = t === 'password' ? '👁️' : '🙈';
     });
 
-    // Helper: show message
     function showMessage(text, ok=true){
       msg.textContent = text;
       msg.style.color = ok ? 'var(--muted)' : '#ffb4b4';
     }
 
-    // Fundamental: form submit event + validation
     form.addEventListener('submit', (ev) => {
-      ev.preventDefault(); // stop normal submit for demo
+      ev.preventDefault();
 
-      // Basic validation (fundamental)
       const emailVal = email.value.trim();
       const pwdVal = password.value;
 
@@ -240,36 +211,28 @@
         return;
       }
 
-      // Remember me behavior (fundamental: localStorage)
       if (remember.checked) {
         localStorage.setItem('demo_email', emailVal);
       } else {
         localStorage.removeItem('demo_email');
       }
 
-      // Simulate authentication (in real app, call backend API via fetch)
       showMessage('Signing in…');
 
-      // Minimal async simulation
       setTimeout(() => {
-        // Dummy success condition for demo (email contains "demo")
         if (emailVal.includes('demo') && pwdVal.length >= 6) {
           showMessage('Login successful — redirecting…');
-          // In real world: window.location = '/app' or similar
         } else {
           showMessage('Invalid credentials (demo rule: use email containing "demo" and password len >= 6)', false);
         }
       }, 800);
     });
 
-    // Social buttons demo handlers
     document.getElementById('githubSign').addEventListener('click', () => {
       showMessage('Redirecting to GitHub OAuth (demo)…');
-      // Real: window.location = '/auth/github'
     });
     document.getElementById('googleSign').addEventListener('click', () => {
       showMessage('Redirecting to Google OAuth (demo)…');
-      // Real: window.location = '/auth/google'
     });
   </script>
 </body>
